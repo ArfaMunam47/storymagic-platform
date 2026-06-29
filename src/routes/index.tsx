@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Sparkles,
   Wand2,
@@ -86,18 +87,18 @@ function Nav() {
           <a href="#faq" className="transition hover:text-foreground">FAQ</a>
         </nav>
         <div className="flex items-center gap-2">
-          <a
-            href="#cta"
+          <Link
+            to="/auth/signin"
             className="hidden rounded-full px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-foreground sm:inline-block"
           >
             Sign in
-          </a>
-          <a
-            href="#cta"
+          </Link>
+          <Link
+            to="/auth/signup"
             className="rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-bold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-glow"
           >
             Start free
-          </a>
+          </Link>
         </div>
       </div>
     </header>
@@ -148,13 +149,13 @@ function Hero() {
             illustrated, and ready in seconds.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#cta"
+            <Link
+              to="/auth/signup"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-7 py-4 text-base font-bold text-white shadow-glow transition hover:-translate-y-1"
             >
               Start free
               <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-            </a>
+            </Link>
             <a
               href="#worlds"
               className="inline-flex items-center gap-2 rounded-full bg-white/80 px-6 py-4 text-base font-bold text-foreground shadow-soft backdrop-blur transition hover:-translate-y-1 hover:bg-white"
