@@ -549,64 +549,104 @@ function Benefits() {
 }
 
 const testimonials = [
-  {
-    name: "Amelia R.",
-    role: "Mom of 2",
-    text: "Bedtime went from a battle to the best part of our day. My son asks for 'just one more chapter' every single night.",
-  },
-  {
-    name: "Daniel K.",
-    role: "Dad in Berlin",
-    text: "The Spanish narration is helping my daughter pick up vocabulary effortlessly. Worth every cent.",
-  },
-  {
-    name: "Priya S.",
-    role: "Mom of 1",
-    text: "She designs a new hero every week. It feels like a tiny Pixar studio living on our couch.",
-  },
+  { name: "Amelia R.", role: "Mom of 2", color: "from-magic-purple to-magic-pink", text: "Bedtime went from a battle to the best part of our day. My son asks for 'just one more chapter' every single night." },
+  { name: "Daniel K.", role: "Dad in Berlin", color: "from-magic-sky to-magic-purple", text: "The Spanish narration is helping my daughter pick up vocabulary effortlessly. Worth every cent." },
+  { name: "Priya S.", role: "Mom of 1", color: "from-magic-orange to-magic-pink", text: "She designs a new hero every week. It feels like a tiny Pixar studio living on our couch." },
+  { name: "Marcus T.", role: "Dad of 3", color: "from-magic-mint to-magic-sky", text: "Three kids, three very different stories every night — and somehow each one is enchanted." },
+  { name: "Yuki H.", role: "Mom in Tokyo", color: "from-magic-pink to-magic-orange", text: "My daughter is shy, but seeing herself as the brave hero changed how she sees herself in real life." },
+  { name: "Sara B.", role: "Mom of 2", color: "from-magic-purple to-magic-yellow", text: "We unplug, snuggle, and explore an entire universe. It's our favorite 15 minutes of the day." },
 ];
 
 function Testimonials() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [page, setPage] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const perPage = 3;
+  const pages = Math.ceil(testimonials.length / perPage);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setPage((p) => (p + 1) % pages), 4500);
+    return () => clearInterval(t);
+  }, [paused, pages]);
+
+  const visible = testimonials.slice(page * perPage, page * perPage + perPage);
+
   return (
-    <section className="relative overflow-hidden bg-gradient-hero py-24">
+    <section ref={sectionRef} className="relative overflow-hidden bg-gradient-hero py-24">
       <FloatingCloud className="left-10 top-12 size-20 animate-drift" />
+      <Sparkle className="right-12 top-20 size-6" />
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-2xl text-center"
+        >
           <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-magic-purple backdrop-blur">
             Parents love it
           </span>
           <h2 className="mt-4 font-display text-4xl font-bold sm:text-5xl">
             Hear from parents who{" "}
-            <span className="text-gradient-magic">trust StoryMagic.</span>
+            <span className="text-gradient-magic">love Story Magic.</span>
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <figure
-              key={t.name}
-              className="relative rounded-3xl bg-white p-7 shadow-card transition hover:-translate-y-2 hover:shadow-float"
-              style={{ transform: `rotate(${i % 2 === 0 ? -0.6 : 0.6}deg)` }}
+        <div
+          className="relative mt-14"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="grid grid-cols-1 gap-6 md:grid-cols-3"
             >
-              <div className="flex text-magic-orange">
-                {Array.from({ length: 5 }).map((_, k) => (
-                  <Star key={k} className="size-4 fill-current" />
-                ))}
-              </div>
-              <blockquote className="mt-4 text-base leading-relaxed text-foreground">
-                "{t.text}"
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3">
-                <span className="grid size-11 place-items-center rounded-full bg-gradient-primary font-display text-sm font-bold text-white">
-                  {t.name[0]}
-                </span>
-                <div>
-                  <p className="font-display font-bold">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+              {visible.map((t) => (
+                <motion.figure
+                  key={t.name}
+                  whileHover={{ y: -8 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="group relative overflow-hidden rounded-3xl bg-white p-7 shadow-card transition hover:shadow-float"
+                >
+                  <div className={`absolute -right-10 -top-10 size-32 rounded-full bg-gradient-to-br ${t.color} opacity-20 transition group-hover:scale-125`} />
+                  <div className="relative flex text-magic-orange">
+                    {Array.from({ length: 5 }).map((_, k) => (
+                      <Star key={k} className="size-4 fill-current" />
+                    ))}
+                  </div>
+                  <blockquote className="relative mt-5 text-base leading-relaxed text-foreground/90">
+                    {t.text}
+                  </blockquote>
+                  <figcaption className="relative mt-6 flex items-center gap-3">
+                    <span className={`grid size-11 place-items-center rounded-full bg-gradient-to-br ${t.color} font-display text-sm font-bold text-white shadow-soft`}>
+                      {t.name[0]}
+                    </span>
+                    <div>
+                      <p className="font-display font-bold">{t.name}</p>
+                      <p className="text-xs text-muted-foreground">{t.role}</p>
+                    </div>
+                  </figcaption>
+                </motion.figure>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="mt-8 flex items-center justify-center gap-2">
+            {Array.from({ length: pages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`h-2 rounded-full transition-all ${i === page ? "w-8 bg-gradient-primary" : "w-2 bg-foreground/20 hover:bg-foreground/40"}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
