@@ -732,8 +732,8 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#cta"
+              <Link
+                to="/auth/signup"
                 className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-bold transition hover:-translate-y-0.5 ${
                   p.highlight
                     ? "bg-white text-magic-purple shadow-soft"
@@ -741,7 +741,7 @@ function Pricing() {
                 }`}
               >
                 {p.cta} <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </div>
           ))}
         </div>
@@ -835,14 +835,14 @@ function FinalCTA() {
             Start free, no credit card required. Your first magical story is just one tap away.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#"
+            <Link
+              to="/auth/signup"
               className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-bold text-magic-purple shadow-glow transition hover:-translate-y-1"
             >
               Start free <ArrowRight className="size-4" />
-            </a>
+            </Link>
             <a
-              href="#"
+              href="#worlds"
               className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 px-7 py-4 font-bold text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white/10"
             >
               <Play className="size-4 fill-current" /> Watch demo
