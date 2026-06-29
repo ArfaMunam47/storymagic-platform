@@ -47,7 +47,7 @@ function FavoritesPage() {
                     <Play className="size-3 fill-current" /> Read again
                   </button>
                   <div className="flex gap-1">
-                    <button onClick={() => navigator.clipboard?.writeText(s.title) && toast.success("Copied")} className="grid size-8 place-items-center rounded-xl text-muted-foreground hover:bg-muted"><Share2 className="size-4" /></button>
+                    <button onClick={() => { navigator.clipboard?.writeText(s.title); toast.success("Copied"); }} className="grid size-8 place-items-center rounded-xl text-muted-foreground hover:bg-muted"><Share2 className="size-4" /></button>
                     <button onClick={() => unfav(s.id)} className="grid size-8 place-items-center rounded-xl text-magic-pink hover:bg-magic-pink/10"><Heart className="size-4 fill-current" /></button>
                     <button onClick={() => { store.removeStory(s.id); setStories((x) => x.filter((y) => y.id !== s.id)); }} className="grid size-8 place-items-center rounded-xl text-muted-foreground hover:bg-magic-pink/10 hover:text-magic-pink"><Trash2 className="size-4" /></button>
                   </div>
