@@ -153,7 +153,7 @@ export function MagicCursor() {
       window.removeEventListener("pointerleave", onLeave);
       document.documentElement.classList.remove("magic-cursor-active");
     };
-  }, []);
+  }, [enabled]);
 
   if (!enabled) return null;
 
