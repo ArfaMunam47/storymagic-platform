@@ -44,8 +44,9 @@ export function MagicCursor() {
     const canvas = canvasRef.current;
     const cursor = cursorRef.current;
     if (!canvas || !cursor) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    const ctx: CanvasRenderingContext2D = context;
 
     document.documentElement.classList.add("magic-cursor-active");
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
