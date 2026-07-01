@@ -23,16 +23,23 @@ export function MagicCursor() {
     lastSpawn: 0,
   });
 
+  // Decide whether to enable the custom cursor (client only).
   useEffect(() => {
-    // Only enable on fine pointer (mouse) + not reduced motion
+    if (typeof window === "undefined") return;
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduce) return;
-    setEnabled(true);
-    document.documentElement.classList.add("magic-cursor-active");
+    if (fine && !reduce) setEnabled(true);
+  }, []);
 
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+  useEffect(() => {
+    if (!enabled) return;
+    const canvas = canvasRef.current;
+    const wand = wandRef.current;
+    if (!canvas || !wand) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    document.documentElement.classList.add("magic-cursor-active");
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
       canvas.width = window.innerWidth * dpr;
