@@ -99,23 +99,84 @@
 }
 
 .dark {
-  --background: oklch(0.18 0.05 290);
-  --foreground: oklch(0.96 0.02 310);
-  --card: oklch(0.22 0.06 290);
-  --card-foreground: oklch(0.96 0.02 310);
-  --popover: oklch(0.22 0.06 290);
-  --popover-foreground: oklch(0.96 0.02 310);
-  --primary: oklch(0.72 0.22 305);
-  --primary-foreground: oklch(0.18 0.05 290);
-  --secondary: oklch(0.28 0.08 300);
-  --secondary-foreground: oklch(0.96 0.02 310);
-  --muted: oklch(0.28 0.06 290);
-  --muted-foreground: oklch(0.75 0.04 300);
-  --accent: oklch(0.72 0.22 0);
-  --accent-foreground: oklch(0.18 0.05 290);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.22 305);
+  /* Deep midnight galaxy palette */
+  --background: oklch(0.16 0.05 285);
+  --foreground: oklch(0.97 0.02 310);
+
+  --card: oklch(0.22 0.07 285);
+  --card-foreground: oklch(0.97 0.02 310);
+  --popover: oklch(0.21 0.07 285);
+  --popover-foreground: oklch(0.97 0.02 310);
+
+  --primary: oklch(0.78 0.19 305);
+  --primary-foreground: oklch(0.14 0.05 285);
+
+  --secondary: oklch(0.28 0.09 295);
+  --secondary-foreground: oklch(0.97 0.02 310);
+
+  --muted: oklch(0.26 0.06 290);
+  --muted-foreground: oklch(0.82 0.04 300);
+
+  --accent: oklch(0.78 0.2 355);
+  --accent-foreground: oklch(0.14 0.05 285);
+
+  --destructive: oklch(0.7 0.22 25);
+  --destructive-foreground: oklch(0.14 0.05 285);
+
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.78 0.19 305);
+
+  /* Magical accents pop brighter in the dark */
+  --magic-purple: oklch(0.78 0.2 305);
+  --magic-pink: oklch(0.8 0.22 0);
+  --magic-sky: oklch(0.82 0.16 230);
+  --magic-mint: oklch(0.85 0.18 165);
+  --magic-orange: oklch(0.82 0.19 50);
+  --magic-yellow: oklch(0.92 0.17 95);
+  --magic-lavender: oklch(0.42 0.1 300);
+  --magic-peach: oklch(0.45 0.1 50);
+
+  /* Hero night sky with nebula gradients */
+  --gradient-hero:
+    radial-gradient(ellipse at 15% 10%, oklch(0.35 0.16 305 / 0.55), transparent 55%),
+    radial-gradient(ellipse at 85% 15%, oklch(0.35 0.15 230 / 0.5), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, oklch(0.32 0.14 340 / 0.55), transparent 60%),
+    linear-gradient(180deg, oklch(0.14 0.06 285) 0%, oklch(0.11 0.06 275) 100%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.7 0.22 305) 0%, oklch(0.72 0.22 0) 100%);
+  --gradient-sunset: linear-gradient(135deg, oklch(0.72 0.2 50) 0%, oklch(0.72 0.22 0) 50%, oklch(0.7 0.22 305) 100%);
+  --gradient-sky: linear-gradient(180deg, oklch(0.24 0.09 260) 0%, oklch(0.18 0.06 285) 100%);
+  --gradient-mint: linear-gradient(135deg, oklch(0.4 0.14 200) 0%, oklch(0.36 0.12 260) 100%);
+  --gradient-magic: linear-gradient(135deg, oklch(0.72 0.22 305), oklch(0.75 0.22 0), oklch(0.78 0.2 50));
+
+  --shadow-soft: 0 10px 30px -10px oklch(0.08 0.05 285 / 0.7);
+  --shadow-glow: 0 20px 60px -12px oklch(0.7 0.22 305 / 0.55);
+  --shadow-card: 0 10px 30px -10px oklch(0 0 0 / 0.55), 0 0 0 1px oklch(1 0 0 / 0.06) inset;
+  --shadow-float: 0 30px 70px -20px oklch(0 0 0 / 0.7), 0 0 0 1px oklch(1 0 0 / 0.08) inset;
+}
+
+/* Twinkling starfield behind dark surfaces */
+.dark body {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, oklch(0.98 0.05 90 / 0.8), transparent 60%),
+    radial-gradient(1px 1px at 70% 60%, oklch(0.95 0.08 300 / 0.7), transparent 60%),
+    radial-gradient(1.5px 1.5px at 40% 80%, oklch(0.95 0.1 200 / 0.6), transparent 60%),
+    radial-gradient(1px 1px at 85% 25%, oklch(0.98 0.05 60 / 0.7), transparent 60%),
+    radial-gradient(1.2px 1.2px at 10% 65%, oklch(0.95 0.1 340 / 0.6), transparent 60%);
+  background-size: 800px 800px, 700px 700px, 900px 900px, 600px 600px, 750px 750px;
+  background-attachment: fixed;
+  animation: starfield-drift 60s linear infinite;
+}
+@keyframes starfield-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 800px 400px, -700px 350px, 900px -450px, -600px 300px, 750px -375px; }
+}
+
+/* Dark-mode glass takes on a moonlit tint */
+.dark .glass,
+:where(.dark) [class~="glass"] {
+  background: color-mix(in oklab, oklch(0.28 0.09 285) 62%, transparent);
+  border-color: color-mix(in oklab, white 14%, transparent);
 }
 
 @layer base {
