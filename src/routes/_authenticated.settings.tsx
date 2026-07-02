@@ -11,6 +11,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
 
 function SettingsPage() {
   const { user, update, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   const nav = useNavigate();
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
