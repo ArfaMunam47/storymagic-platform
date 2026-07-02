@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { MagicCursor } from "../components/MagicCursor";
+import { ThemeProvider } from "../lib/theme";
 
 function NotFoundComponent() {
   return (
