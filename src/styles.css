@@ -456,3 +456,27 @@
     radial-gradient(1.4px 1.4px at 45% 50%, oklch(0.95 0.1 200 / 0.7), transparent 60%);
   animation: twinkle 4s ease-in-out infinite;
 }
+
+/* ============================================================
+   Magic Cursor — Light-mode variant
+   Matte pink 3D cartoon (no glossy shine)
+   ============================================================ */
+:root:not(.dark) .magic-cursor-character {
+  /* Recolor the shared magic tokens locally so the SVG gradients
+     become a soft pink/rose cartoon palette */
+  --magic-mint: oklch(0.92 0.06 355);      /* soft blush */
+  --magic-sky: oklch(0.82 0.15 355);       /* rose */
+  --magic-purple: oklch(0.66 0.22 355);    /* deep pink */
+  --magic-peach: oklch(0.9 0.09 20);       /* peach highlight */
+  --magic-pink: oklch(0.72 0.22 0);        /* strawberry */
+  --magic-yellow: oklch(0.9 0.14 40);      /* warm cream accent */
+  --magic-orange: oklch(0.78 0.19 25);
+  /* Matte, flat drop shadow — no neon glow */
+  filter: drop-shadow(0 6px 10px oklch(0.55 0.18 355 / 0.28));
+}
+/* Kill the shiny belly highlight and neon aura in light mode */
+:root:not(.dark) .magic-cursor-character .dragon-body ellipse { opacity: 0 !important; }
+:root:not(.dark) .magic-cursor-character .dragon-aura { display: none; }
+:root:not(.dark) .magic-cursor-character[data-hover="1"] {
+  filter: drop-shadow(0 8px 14px oklch(0.6 0.22 355 / 0.38));
+}
