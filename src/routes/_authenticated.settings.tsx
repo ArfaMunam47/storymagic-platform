@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
+import { useTheme, type Theme } from "@/lib/theme";
 import { useState } from "react";
 import { toast } from "sonner";
 
