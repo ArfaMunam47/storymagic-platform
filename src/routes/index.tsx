@@ -205,33 +205,25 @@ function Hero() {
               className="relative z-10 size-full object-contain drop-shadow-[0_30px_60px_rgba(120,80,200,0.35)]"
             />
 
-            {/* Floating chips */}
-            <div className="absolute -left-4 top-10 z-20 hidden rounded-2xl bg-white/90 px-4 py-3 shadow-float backdrop-blur animate-float-slow sm:flex sm:items-center sm:gap-3">
-              <span className="grid size-9 place-items-center rounded-xl bg-magic-yellow/30 text-2xl">⭐</span>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground">Stories created</p>
-                <p className="font-display text-lg font-bold">50,000+</p>
-              </div>
-            </div>
-            <div
-              className="absolute -right-4 top-1/3 z-20 hidden rounded-2xl bg-white/90 px-4 py-3 shadow-float backdrop-blur animate-float-y sm:flex sm:items-center sm:gap-3"
-              style={{ animationDelay: "1.2s" }}
-            >
-              <span className="grid size-9 place-items-center rounded-xl bg-magic-pink/25 text-2xl">❤️</span>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground">Parent rating</p>
-                <p className="font-display text-lg font-bold">4.9 / 5</p>
-              </div>
-            </div>
-            <div
-              className="absolute bottom-4 left-6 z-20 hidden rounded-2xl bg-white/90 px-4 py-3 shadow-float backdrop-blur animate-float-slow sm:flex sm:items-center sm:gap-3"
-              style={{ animationDelay: "0.6s" }}
-            >
-              <span className="grid size-9 place-items-center rounded-xl bg-magic-sky/25 text-2xl">🌎</span>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground">Countries</p>
-                <p className="font-display text-lg font-bold">120+</p>
-              </div>
+            {/* Floating stat chips — equally spaced row */}
+            <div className="pointer-events-none absolute inset-x-0 -bottom-6 z-20 grid grid-cols-3 gap-3 px-2 sm:gap-4 sm:px-4">
+              {[
+                { icon: "⭐", tint: "bg-magic-yellow/30", label: "Stories created", value: "50,000+", delay: "0s" },
+                { icon: "❤️", tint: "bg-magic-pink/25", label: "Parent rating", value: "4.9 / 5", delay: "0.6s" },
+                { icon: "🌎", tint: "bg-magic-sky/25", label: "Countries", value: "120+", delay: "1.2s" },
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  className="pointer-events-auto flex items-center justify-center gap-2 rounded-2xl bg-white/90 px-3 py-2.5 shadow-float backdrop-blur animate-float-slow sm:gap-3 sm:px-4 sm:py-3"
+                  style={{ animationDelay: s.delay }}
+                >
+                  <span className={`grid size-8 shrink-0 place-items-center rounded-xl text-xl sm:size-9 sm:text-2xl ${s.tint}`}>{s.icon}</span>
+                  <div className="min-w-0">
+                    <p className="truncate text-[10px] font-semibold text-muted-foreground sm:text-xs">{s.label}</p>
+                    <p className="font-display text-sm font-bold sm:text-lg">{s.value}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -872,7 +864,7 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="bg-foreground/95 text-white">
+    <footer className="bg-[oklch(0.14_0.06_285)] text-white dark:bg-[oklch(0.08_0.05_282)]">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-10 px-6 py-16 md:grid-cols-5">
         <div className="col-span-2">
           <div className="flex items-center gap-2">
