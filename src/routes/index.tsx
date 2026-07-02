@@ -872,7 +872,7 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="bg-foreground/95 text-white">
+    <footer className="bg-[oklch(0.14_0.06_285)] text-white dark:bg-[oklch(0.08_0.05_282)]">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-10 px-6 py-16 md:grid-cols-5">
         <div className="col-span-2">
           <div className="flex items-center gap-2">
