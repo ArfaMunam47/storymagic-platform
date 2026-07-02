@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
+import { useTheme, type Theme } from "@/lib/theme";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
 
 function SettingsPage() {
   const { user, update, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   const nav = useNavigate();
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
@@ -51,8 +53,14 @@ function SettingsPage() {
           </select>
         </Row>
         <Row label="Theme">
-          <select className="rounded-2xl border bg-muted/40 px-4 py-2.5 text-sm font-semibold">
-            {["Light", "Dark", "System"].map((l) => <option key={l}>{l}</option>)}
+          <select
+            value={theme}
+            onChange={(e) => { const t = e.target.value as Theme; setTheme(t); toast.success(`Switched to ${t} theme`); }}
+            className="rounded-2xl border bg-muted/40 px-4 py-2.5 text-sm font-semibold"
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark — Bedtime Magic</option>
+            <option value="system">System</option>
           </select>
         </Row>
       </Card>
