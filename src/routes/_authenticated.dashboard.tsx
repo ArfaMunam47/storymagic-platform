@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Play, Sparkles, ArrowRight, BookOpen, Flame, Clock, Trophy, Heart, Wand2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { store, type Story } from "@/lib/store";
+import { fetchStories, type Story } from "@/lib/stories";
 import dashHero from "@/assets/dash-hero.png";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -36,11 +36,14 @@ function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
 function Dashboard() {
   const { user } = useAuth();
   const [stories, setStories] = useState<Story[]>([]);
-  useEffect(() => { setStories(store.stories()); }, []);
+  useEffect(() => {
+    if (!user) return;
+    fetchStories(user.id).then(setStories).catch(() => setStories([]));
+  }, [user]);
 
   const stats = [
-    { label: "Stories Created", value: stories.length, icon: BookOpen, color: "from-magic-purple to-magic-pink" },
-    { label: "Books Read", value: stories.filter((s) => s.progress === 100).length + 7, icon: Trophy, color: "from-magic-orange to-magic-pink" },
+    { label: "Stories in Library", value: stories.length, icon: BookOpen, color: "from-magic-purple to-magic-pink" },
+    { label: "Books Read", value: stories.filter((s) => s.progress === 100).length, icon: Trophy, color: "from-magic-orange to-magic-pink" },
     { label: "Reading Streak", value: 5, suffix: "d", icon: Flame, color: "from-magic-orange to-magic-yellow" },
     { label: "Minutes Read", value: 178, icon: Clock, color: "from-magic-sky to-magic-purple" },
     { label: "Achievements", value: 4, icon: Trophy, color: "from-magic-purple to-magic-yellow" },
@@ -48,6 +51,7 @@ function Dashboard() {
   ];
 
   const continueReading = stories.filter((s) => s.progress > 0 && s.progress < 100).slice(0, 3);
+
 
   return (
     <div className="space-y-6">
