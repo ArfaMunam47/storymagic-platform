@@ -41,20 +41,27 @@ function SignUpPage() {
     if (pwd !== pwd2) return toast.error("Passwords don't match");
     if (!agree) return toast.error("Please accept the terms");
     setBusy(true);
-    await signUp(parent, email, pwd);
-    if (child) {
-      store.addProfile({
-        id: crypto.randomUUID(),
-        name: child,
-        age: Number(age) || 5,
-        genre: theme,
-        emoji: theme === "Space" ? "🚀" : theme === "Ocean" ? "🐠" : theme === "Dinosaurs" ? "🦕" : "🧚",
-        progress: 0,
-      });
+    try {
+      await signUp(parent, email, pwd);
+      if (child) {
+        store.addProfile({
+          id: crypto.randomUUID(),
+          name: child,
+          age: Number(age) || 5,
+          genre: theme,
+          emoji: theme === "Space" ? "🚀" : theme === "Ocean" ? "🐠" : theme === "Dinosaurs" ? "🦕" : "🧚",
+          progress: 0,
+        });
+      }
+      toast.success("Welcome to StoryMagic! ✨ Check your email to verify your account.");
+      nav({ to: "/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Sign-up failed");
+    } finally {
+      setBusy(false);
     }
-    toast.success("Welcome to StoryMagic! ✨");
-    nav({ to: "/dashboard" });
   };
+
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-gradient-hero">
