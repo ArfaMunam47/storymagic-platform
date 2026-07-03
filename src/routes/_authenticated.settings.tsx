@@ -10,14 +10,60 @@ export const Route = createFileRoute("/_authenticated/settings")({
 });
 
 function SettingsPage() {
-  const { user, update, signOut } = useAuth();
+  const { user, update, signOut, updatePassword } = useAuth();
   const { theme, setTheme } = useTheme();
   const nav = useNavigate();
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
+  const [newPwd, setNewPwd] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [pwdSaving, setPwdSaving] = useState(false);
 
-  const save = () => { update({ name, email }); toast.success("Profile saved"); };
-  const remove = () => { if (confirm("Delete your account? This cannot be undone.")) { signOut(); nav({ to: "/" }); } };
+  const save = async () => {
+    setSaving(true);
+    try {
+      if (name !== user?.name) await update({ name });
+      if (email && email !== user?.email) {
+        const { supabase } = await import("@/integrations/supabase/client");
+        const { error } = await supabase.auth.updateUser({ email });
+        if (error) throw error;
+        toast.success("Check your inbox to confirm the new email");
+      } else {
+        toast.success("Profile saved");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to save");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const changePassword = async () => {
+    if (newPwd.length < 6) return toast.error("Password must be at least 6 characters");
+    setPwdSaving(true);
+    try {
+      await updatePassword(newPwd);
+      setNewPwd("");
+      toast.success("Password updated");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to update password");
+    } finally {
+      setPwdSaving(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!confirm("Delete your account? This cannot be undone.")) return;
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      if (user) await supabase.from("profiles").delete().eq("id", user.id);
+      await signOut();
+      nav({ to: "/" });
+      toast.success("Account signed out. Contact support to fully delete your login.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed");
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -29,13 +75,14 @@ function SettingsPage() {
       <Card title="Profile">
         <Row label="Name"><Input value={name} onChange={setName} /></Row>
         <Row label="Email"><Input value={email} onChange={setEmail} /></Row>
-        <button onClick={save} className="rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-bold text-white shadow-soft hover:-translate-y-0.5 transition">Save changes</button>
+        <button onClick={save} disabled={saving} className="rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-bold text-white shadow-soft hover:-translate-y-0.5 transition disabled:opacity-60">{saving ? "Saving…" : "Save changes"}</button>
       </Card>
 
       <Card title="Password">
-        <Row label="New password"><Input type="password" value="" onChange={() => {}} placeholder="••••••••" /></Row>
-        <button onClick={() => toast.success("Password updated")} className="rounded-full bg-magic-purple/10 px-5 py-2.5 text-sm font-bold text-magic-purple hover:bg-magic-purple/20 transition">Update password</button>
+        <Row label="New password"><Input type="password" value={newPwd} onChange={setNewPwd} placeholder="••••••••" /></Row>
+        <button onClick={changePassword} disabled={pwdSaving} className="rounded-full bg-magic-purple/10 px-5 py-2.5 text-sm font-bold text-magic-purple hover:bg-magic-purple/20 transition disabled:opacity-60">{pwdSaving ? "Updating…" : "Update password"}</button>
       </Card>
+
 
       <Card title="Notifications">
         {["New stories ready", "Achievements unlocked", "Weekly reading goals", "Product updates"].map((l) => (
