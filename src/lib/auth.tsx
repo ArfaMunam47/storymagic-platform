@@ -97,11 +97,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const update = async (patch: Partial<Pick<User, "name" | "avatar">>) => {
     if (!user) return;
-    const dbPatch: Record<string, unknown> = {};
+    const dbPatch: { name?: string; avatar_url?: string | null } = {};
     if (patch.name !== undefined) dbPatch.name = patch.name;
-    if (patch.avatar !== undefined) dbPatch.avatar_url = patch.avatar;
-    const { error } = await supabase.from("profiles").update(dbPatch).eq("id", user.id);
-    if (error) throw new Error(error.message);
+    if (patch.avatar !== undefined) dbPatch.avatar_url = patch.avatar ?? null;
+    if (Object.keys(dbPatch).length > 0) {
+      const { error } = await supabase.from("profiles").update(dbPatch).eq("id", user.id);
+      if (error) throw new Error(error.message);
+    }
     setUser({ ...user, ...patch });
   };
 
