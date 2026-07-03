@@ -28,17 +28,21 @@ function SignInPage() {
     e.preventDefault();
     if (!email || !pwd) { toast.error("Please fill in both fields"); return; }
     setBusy(true);
-    await signIn(email, pwd);
-    toast.success("Welcome back! ✨");
-    nav({ to: "/dashboard" });
+    try {
+      await signIn(email, pwd);
+      toast.success("Welcome back! ✨");
+      nav({ to: "/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Sign-in failed");
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const social = async (provider: string) => {
-    setBusy(true);
-    await signIn(`demo@${provider}.com`, "demo");
-    toast.success(`Signed in with ${provider}`);
-    nav({ to: "/dashboard" });
+  const social = async () => {
+    toast("Social sign-in coming soon — please use email for now.");
   };
+
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-gradient-hero">
@@ -79,7 +83,7 @@ function SignInPage() {
                 <label className="flex cursor-pointer items-center gap-2 font-semibold text-foreground/70">
                   <input type="checkbox" className="size-4 rounded border-input accent-magic-purple" /> Remember me
                 </label>
-                <a href="#" className="font-semibold text-magic-purple hover:underline">Forgot password?</a>
+                <a href="/auth/forgot-password" className="font-semibold text-magic-purple hover:underline">Forgot password?</a>
               </div>
 
               <RippleButton disabled={busy} className="w-full bg-gradient-primary text-white shadow-glow">
@@ -90,10 +94,10 @@ function SignInPage() {
                 <span className="h-px flex-1 bg-border" /> or <span className="h-px flex-1 bg-border" />
               </div>
 
-              <button type="button" onClick={() => social("google")} className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-bold shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
+              <button type="button" onClick={social} className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-bold shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
                 <GoogleIcon /> Continue with Google
               </button>
-              <button type="button" onClick={() => social("microsoft")} className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-bold shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
+              <button type="button" onClick={social} className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3 text-sm font-bold shadow-soft transition hover:-translate-y-0.5 hover:shadow-card">
                 <MicrosoftIcon /> Continue with Microsoft
               </button>
             </form>
