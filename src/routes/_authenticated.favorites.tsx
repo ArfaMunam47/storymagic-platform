@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BookOpen, Heart, Share2, Trash2, Play } from "lucide-react";
-import { store, type Story } from "@/lib/store";
+import { BookOpen, Heart, Share2, Play } from "lucide-react";
+import { fetchStories, toggleFavorite, type Story } from "@/lib/stories";
+import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/favorites")({
@@ -11,13 +12,27 @@ export const Route = createFileRoute("/_authenticated/favorites")({
 });
 
 function FavoritesPage() {
+  const { user } = useAuth();
   const [stories, setStories] = useState<Story[]>([]);
-  useEffect(() => { setStories(store.stories().filter((s) => s.favorite)); }, []);
+  const [loading, setLoading] = useState(true);
 
-  const unfav = (id: string) => {
-    store.toggleFav(id);
+  useEffect(() => {
+    if (!user) return;
+    fetchStories(user.id)
+      .then((all) => setStories(all.filter((s) => s.favorite)))
+      .catch((e) => toast.error(e.message))
+      .finally(() => setLoading(false));
+  }, [user]);
+
+  const unfav = async (id: string) => {
+    if (!user) return;
     setStories((s) => s.filter((x) => x.id !== id));
-    toast("Removed from favorites");
+    try {
+      await toggleFavorite(user.id, id, true);
+      toast("Removed from favorites");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed");
+    }
   };
 
   return (
@@ -27,7 +42,9 @@ function FavoritesPage() {
         <p className="mt-1 text-sm text-muted-foreground">The stories you keep coming back to.</p>
       </header>
 
-      {stories.length === 0 ? (
+      {loading ? (
+        <div className="rounded-3xl bg-white p-10 text-center text-muted-foreground shadow-card">Loading…</div>
+      ) : stories.length === 0 ? (
         <div className="rounded-3xl bg-white p-10 text-center shadow-card">
           <p className="text-muted-foreground">No favorites yet. Tap the heart on any story to add it here ❤️</p>
         </div>
@@ -49,7 +66,6 @@ function FavoritesPage() {
                   <div className="flex gap-1">
                     <button onClick={() => { navigator.clipboard?.writeText(s.title); toast.success("Copied"); }} className="grid size-8 place-items-center rounded-xl text-muted-foreground hover:bg-muted"><Share2 className="size-4" /></button>
                     <button onClick={() => unfav(s.id)} className="grid size-8 place-items-center rounded-xl text-magic-pink hover:bg-magic-pink/10"><Heart className="size-4 fill-current" /></button>
-                    <button onClick={() => { store.removeStory(s.id); setStories((x) => x.filter((y) => y.id !== s.id)); }} className="grid size-8 place-items-center rounded-xl text-muted-foreground hover:bg-magic-pink/10 hover:text-magic-pink"><Trash2 className="size-4" /></button>
                   </div>
                 </div>
               </div>
