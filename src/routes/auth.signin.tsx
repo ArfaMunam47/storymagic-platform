@@ -28,17 +28,21 @@ function SignInPage() {
     e.preventDefault();
     if (!email || !pwd) { toast.error("Please fill in both fields"); return; }
     setBusy(true);
-    await signIn(email, pwd);
-    toast.success("Welcome back! ✨");
-    nav({ to: "/dashboard" });
+    try {
+      await signIn(email, pwd);
+      toast.success("Welcome back! ✨");
+      nav({ to: "/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Sign-in failed");
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const social = async (provider: string) => {
-    setBusy(true);
-    await signIn(`demo@${provider}.com`, "demo");
-    toast.success(`Signed in with ${provider}`);
-    nav({ to: "/dashboard" });
+  const social = async () => {
+    toast("Social sign-in coming soon — please use email for now.");
   };
+
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-gradient-hero">
