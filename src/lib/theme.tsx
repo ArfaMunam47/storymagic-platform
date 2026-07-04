@@ -19,7 +19,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [resolved, setResolved] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const stored = (typeof window !== "undefined" && (localStorage.getItem(KEY) as Theme)) || "system";
+    // Default: Light Mode for first-time visitors. Honor an explicit saved choice only.
+    const stored = (typeof window !== "undefined" && (localStorage.getItem(KEY) as Theme)) || "light";
     setThemeState(stored);
     setResolved(apply(stored));
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -27,6 +28,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     mq.addEventListener?.("change", onChange);
     return () => mq.removeEventListener?.("change", onChange);
   }, []);
+
 
   const setTheme = (t: Theme) => {
     localStorage.setItem(KEY, t);
