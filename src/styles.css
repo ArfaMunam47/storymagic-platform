@@ -270,6 +270,13 @@
     cursor: none !important;
   }
 }
+/* Decorative cursor layers must never intercept mouse events */
+.magic-cursor,
+.magic-cursor-character,
+.magic-cursor-character * {
+  pointer-events: none !important;
+}
+
 .magic-cursor-character {
   filter: drop-shadow(0 10px 18px oklch(0.42 0.18 300 / 0.36));
   transition: transform 80ms cubic-bezier(.2,.95,.25,1.18), filter 220ms ease;
