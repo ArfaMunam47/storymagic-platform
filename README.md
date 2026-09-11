@@ -62,6 +62,3 @@ supabase/
 └── migrations/     # schema, RLS policies, seed data
 ```
 
-## Built with Lovable
-
-This project is developed with [Lovable](https://lovable.dev) — build the UI in the editor and push changes straight back to this repository.
