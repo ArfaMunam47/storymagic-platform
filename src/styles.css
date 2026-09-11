@@ -96,7 +96,25 @@
   --shadow-glow: 0 20px 50px -12px oklch(0.72 0.22 0 / 0.4);
   --shadow-card: 0 8px 24px -8px oklch(0.5 0.1 290 / 0.18);
   --shadow-float: 0 30px 60px -20px oklch(0.4 0.15 290 / 0.25);
+
+  /* ---- Matte 3D toy material (soft studio light, no gloss) ---- */
+  /* Top rim = soft key light, bottom rim = molded bevel, plus ambient + contact shadow */
+  --toy-rim-light: inset 0 2px 0 oklch(1 0 0 / 0.72), inset 0 1px 3px oklch(1 0 0 / 0.5);
+  --toy-rim-dark: inset 0 -3px 0 oklch(0.55 0.1 295 / 0.1);
+  --toy-ambient: 0 10px 22px -12px oklch(0.45 0.1 292 / 0.2);
+  --toy-contact: 0 2px 4px -1px oklch(0.4 0.1 292 / 0.14);
+  --toy-surface: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact), var(--toy-ambient);
+  --toy-surface-lift:
+    inset 0 2px 0 oklch(1 0 0 / 0.8), inset 0 1px 4px oklch(1 0 0 / 0.55),
+    inset 0 -3px 0 oklch(0.55 0.1 295 / 0.09),
+    0 4px 8px -2px oklch(0.4 0.1 292 / 0.14),
+    0 20px 38px -18px oklch(0.42 0.1 292 / 0.26);
+  --toy-press:
+    inset 0 3px 8px oklch(0.4 0.12 292 / 0.18), inset 0 -1px 0 oklch(1 0 0 / 0.35),
+    0 1px 2px oklch(0.4 0.1 292 / 0.12);
+  --toy-ease: cubic-bezier(0.34, 1.4, 0.5, 1);
 }
+
 
 .dark {
   /* Deep midnight galaxy palette */
