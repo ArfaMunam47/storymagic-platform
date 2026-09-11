@@ -508,3 +508,81 @@ textarea:focus {
 }
 /* Never let decoration create horizontal scroll */
 html, body { overflow-x: hidden; }
+
+/* Magical hover glow utility */
+@utility magic-hover {
+  position: relative;
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+/* ============================================================
+   DARK MODE — Global surface remapping
+   Auto-transforms hardcoded light utilities into premium
+   midnight surfaces without touching every route file.
+   ============================================================ */
+.dark .bg-white { background-color: color-mix(in oklab, var(--card) 92%, transparent) !important; color: var(--foreground); }
+.dark .bg-white\/90 { background-color: color-mix(in oklab, var(--card) 85%, transparent) !important; backdrop-filter: blur(14px) saturate(140%); }
+.dark .bg-white\/80 { background-color: color-mix(in oklab, var(--card) 72%, transparent) !important; backdrop-filter: blur(14px) saturate(140%); }
+.dark .bg-white\/70 { background-color: color-mix(in oklab, var(--card) 62%, transparent) !important; backdrop-filter: blur(14px) saturate(140%); }
+.dark .bg-white\/40 { background-color: color-mix(in oklab, var(--card) 40%, transparent) !important; backdrop-filter: blur(12px) saturate(140%); }
+.dark .bg-white\/30 { background-color: color-mix(in oklab, var(--magic-purple) 22%, transparent) !important; backdrop-filter: blur(10px) saturate(140%); }
+.dark .bg-white\/25 { background-color: color-mix(in oklab, var(--magic-purple) 24%, transparent) !important; }
+.dark .bg-white\/20 { background-color: color-mix(in oklab, var(--magic-purple) 18%, transparent) !important; }
+.dark .bg-white\/10 { background-color: color-mix(in oklab, var(--magic-purple) 12%, transparent) !important; }
+
+.dark .border-white\/40,
+.dark .border-white\/30,
+.dark .border-white\/20,
+.dark .border-white\/10 {
+  border-color: color-mix(in oklab, var(--magic-yellow) 22%, transparent) !important;
+}
+
+.dark .text-black { color: var(--foreground) !important; }
+.dark .text-white { color: oklch(0.98 0.02 305); }
+
+.dark .bg-muted,
+.dark .bg-muted\/40,
+.dark .bg-muted\/50,
+.dark .bg-muted\/60 {
+  background-color: color-mix(in oklab, var(--muted) 80%, transparent) !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: color-mix(in oklab, var(--card) 55%, transparent) !important;
+  color: var(--foreground);
+  border-color: color-mix(in oklab, var(--magic-purple) 32%, transparent);
+}
+.dark input::placeholder,
+.dark textarea::placeholder { color: color-mix(in oklab, var(--foreground) 55%, transparent); }
+.dark option { background-color: oklch(0.16 0.07 285); color: var(--foreground); }
+
+.dark [data-sonner-toast],
+.dark [role="dialog"],
+.dark [role="menu"],
+.dark [role="listbox"],
+.dark [role="tooltip"] {
+  background-color: color-mix(in oklab, var(--popover) 92%, transparent) !important;
+  color: var(--popover-foreground) !important;
+  border: 1px solid color-mix(in oklab, var(--magic-yellow) 20%, transparent) !important;
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+.dark .text-magic-purple { color: var(--magic-purple); }
+.dark .text-magic-pink { color: var(--magic-pink); }
+
+/* Floating moon glow for hero panels */
+.dark .bg-gradient-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 82% 18%, oklch(0.95 0.14 90 / 0.35), transparent 22%),
+    radial-gradient(1.5px 1.5px at 15% 25%, oklch(0.98 0.05 90 / 0.9), transparent 60%),
+    radial-gradient(1.2px 1.2px at 75% 70%, oklch(0.95 0.1 300 / 0.8), transparent 60%),
+    radial-gradient(1.4px 1.4px at 45% 50%, oklch(0.95 0.1 200 / 0.7), transparent 60%);
+  animation: twinkle 4s ease-in-out infinite;
+}
