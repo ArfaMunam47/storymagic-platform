@@ -372,20 +372,9 @@
   100% { scale: 1; }
 }
 
-/* Interactive elements bounce and glow under the magic friend */
-@media (hover: hover) and (pointer: fine) {
-  a:hover, button:not(:disabled):hover, [role="button"]:hover,
-  label:hover, summary:hover, input:hover, select:hover, textarea:hover,
-  [data-cursor="hover"]:hover {
-    transform: translateY(-2px) scale(1.025);
-    box-shadow: 0 12px 28px -18px color-mix(in oklab, var(--primary) 72%, transparent), 0 0 0 1px color-mix(in oklab, var(--magic-yellow) 18%, transparent) inset;
-    transition: transform 180ms cubic-bezier(.2,.9,.3,1.2), box-shadow 220ms ease, filter 220ms ease;
-  }
-  a:active, button:not(:disabled):active, [role="button"]:active {
-    transform: translateY(0) scale(0.97);
-    transition: transform 90ms ease-out;
-  }
-}
+/* Toy press physics now live in the MATTE 3D TOY LAYER below.
+   Text inputs and labels are deliberately excluded so typing stays calm. */
+
 
 /* Magical hover glow utility */
 @utility magic-hover {
