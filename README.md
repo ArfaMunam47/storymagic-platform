@@ -1,542 +1,67 @@
-# Story Spark Studio
+# StoryMagic
 
-Based on your reference, the style you're aiming for is:
+> Personalized AI-powered bedtime stories where your child becomes the hero of every story.
 
-Vibrant, playful, premium children's brand
+## Status
 
-Pixar/DreamWorks-inspired 3D cartoon characters
+**🟢 Active** — In active development. Features are being built and shipped incrementally.
 
-Bright gradients, rounded shapes, floating elements
+## About
 
-Interactive animations throughout the page
+StoryMagic is a full-stack web application that turns every child into the hero of their own adventure. Parents and kids pick a world, build a character, and the app generates a unique, age-appropriate, child-safe story in seconds — complete with a moral lesson, multiple languages, and adjustable reading levels.
 
-Premium SaaS/product landing page rather than a simple kids website
+The product pairs a polished, magic-themed landing experience with a complete member dashboard: a story library with favorites and search, reading-progress tracking, child profiles, learning games, achievements, and a fully responsive UI with playful 60fps animations.
 
-Modern UI with lots of depth, shadows, and illustrations
+## Tech Stack
 
-Here's a detailed prompt you can directly paste into Lovable.
+**Frontend**
 
-Landing Page Prompt
+- React 19 · TanStack Router & Start · Tailwind CSS v4 · Framer Motion
 
-Design a modern, premium, colorful landing page for a children's AI storytelling platform. The design should feel magical, playful, immersive, and extremely polished, inspired by high-end startups rather than generic kids websites.
+**Backend & Data**
 
-Overall Style
+- TanStack server functions · Supabase (Postgres + Row-Level Security, Auth, Storage)
+- AI story generation via the Lovable AI Gateway with Zod-validated inputs
 
-Create a visually stunning landing page with:
+**Tooling**
 
-Pixar-quality 3D cartoon characters
+- TypeScript · Bun · Vite
 
-Soft colorful gradients
+## Key Features
 
-Floating clouds
+- **AI Story Generator** — 12 categories, 2/5/10-minute lengths, 8 languages, difficulty levels, and optional moral lessons
+- **Personalized characters** — name, age, and themes baked into every generated tale
+- **Story library** — search, favorites, and reading-progress/resume tracking synced per user
+- **Child profiles** — tailor experiences per child in the family
+- **Learning games & achievements** — quests and badges that reward curious minds
+- **Parent dashboard** — stats, continue-reading, and quick access to everything
+- **Safe by design** — strict AI content guardrails and RLS-protected user data
 
-Stars
+## Getting Started
 
-Magical particles
-
-Rounded cards
-
-Cute icons
-
-Organic wave section dividers
-
-Large illustrations
-
-Glassmorphism effects where appropriate
-
-Soft shadows
-
-Smooth transitions
-
-Premium typography
-
-Bright but balanced color palette
-
-Primary Colors:
-
-Purple
-
-Pink
-
-Sky Blue
-
-Emerald Green
-
-Orange
-
-Yellow
-
-Backgrounds should alternate between:
-
-Light lavender
-
-Soft blue
-
-White
-
-Peach
-
-Gradient sections
-
-The page should feel alive, magical, and energetic.
-
-Hero Section
-
-Full-screen hero.
-
-Left side:
-
-Large heading
-
-Create Magical Stories That Spark Every Child's Imagination
-
-Subheading
-
-Personalized AI-powered adventures where your child becomes the hero of every story.
-
-CTA Buttons
-
-Start Free
-
-Watch Demo
-
-Right side:
-
-Large 3D cartoon child holding a magical glowing storybook.
-
-Around the child:
-
-flying dragons
-
-tiny fairies
-
-floating books
-
-magic sparkles
-
-butterflies
-
-glowing stars
-
-floating letters
-
-colorful balloons
-
-Everything should gently float using animations.
-
-Background:
-
-Animated clouds moving slowly.
-
-Small birds flying.
-
-Soft gradient sky.
-
-Floating Stats
-
-Four floating cards
-
-⭐ 50,000+ Stories Created
-
-📚 10,000+ Happy Parents
-
-🌎 120+ Countries
-
-❤️ 4.9 Rating
-
-Cards slightly hover on mouse.
-
-Trusted By
-
-Logo strip
-
-Animated grayscale to color on hover.
-
-Features Section
-
-Use 3D cards.
-
-Each feature has:
-
-colorful icon
-
-illustration
-
-hover animation
-
-floating effect
-
-Features:
-
-✨ AI Generated Stories
-
-🎨 Personalized Characters
-
-🎙 Voice Narration
-
-🌍 Multiple Languages
-
-📖 Reading Progress
-
-🛌 Bedtime Mode
-
-🎯 Educational Adventures
-
-🧠 Learning Games
-
-Interactive Story Demo
-
-Large mockup of story player.
-
-Child avatar appears.
-
-AI generates a story.
-
-Pages flip with animation.
-
-Characters slightly move.
-
-Magic particles follow mouse cursor.
-
-Include
-
-Next Page animation.
-
-Character Personalization
-
-Large section.
-
-Parents can customize:
-
-Hair
-
-Skin tone
-
-Outfit
-
-Pet
-
-Favorite color
-
-Fantasy world
-
-Superpowers
-
-Display multiple adorable Pixar-style 3D kids.
-
-Changing options updates character preview.
-
-Magical Worlds Section
-
-Grid of large animated cards.
-
-Each world has its own 3D scene.
-
-Fantasy Kingdom
-
-Space Adventure
-
-Jungle Safari
-
-Underwater World
-
-Pirate Island
-
-Dinosaur Land
-
-Candy Kingdom
-
-Wizard School
-
-Hover animations:
-
-Clouds move
-
-Characters wave
-
-Stars twinkle
-
-Lights glow
-
-Learning Benefits
-
-Beautiful infographic.
-
-Icons connected with curved lines.
-
-Benefits:
-
-Reading Skills
-
-Vocabulary
-
-Creativity
-
-Confidence
-
-Problem Solving
-
-Empathy
-
-Critical Thinking
-
-Focus
-
-Use animated illustrations.
-
-Parent Dashboard
-
-Modern dashboard preview.
-
-Features
-
-Reading Analytics
-
-Story History
-
-Achievements
-
-Time Tracking
-
-Screen Time Control
-
-Weekly Reports
-
-Parental Controls
-
-Modern glassmorphism UI.
-
-Kids Achievements
-
-Large colorful badges.
-
-Examples
-
-Explorer
-
-Master Reader
-
-Dragon Tamer
-
-Space Hero
-
-Treasure Hunter
-
-Wizard Apprentice
-
-Badges should shine when hovered.
-
-Testimonials
-
-Rounded cards.
-
-Parents with cute illustrated children.
-
-Auto sliding carousel.
-
-Speech bubbles.
-
-Star ratings.
-
-Soft animations.
-
-Pricing
-
-Three pricing cards.
-
-Starter
-
-Family
-
-Premium
-
-Center card larger.
-
-Hover lift animation.
-
-Glowing border.
-
-FAQ
-
-Accordion with smooth opening animation.
-
-Cute icons.
-
-Final CTA
-
-Large magical illustration.
-
-Headline
-
-Ready To Create Your Child's Next Adventure?
-
-Buttons
-
-Start Free
-
-Get Demo
-
-Background:
-
-Fireflies
-
-Magic dust
-
-Floating books
-
-Animated rainbow
-
-Footer
-
-Rounded footer.
-
-Quick Links
-
-Resources
-
-Company
-
-Social Icons
-
-Newsletter
-
-Small animated mascot waving.
-
-Animations
-
-The website should feel alive.
-
-Use:
-
-Floating animations
-
-Fade in on scroll
-
-Cards lift on hover
-
-Buttons bounce slightly
-
-Smooth page transitions
-
-Clouds moving
-
-Birds flying
-
-Twinkling stars
-
-Fireflies
-
-Floating sparkles
-
-Mouse parallax
-
-Character idle animations
-
-Storybook page flip animation
-
-Confetti when CTA is clicked
-
-Animated gradients
-
-Soft glowing effects
-
-Cursor interaction
-
-Scroll-triggered reveals
-
-Infinite subtle movement for illustrations
-
-Animations should be smooth (60fps), premium, and not overwhelming.
-
-UI Style
-
-Extremely rounded corners (20–30px)
-
-Large spacing
-
-Premium modern layout
-
-Soft shadows
-
-Glassmorphism panels
-
-Bright gradients
-
-Large illustrations
-
-Cute typography
-
-Accessible contrast
-
-Responsive design
-
-Mobile-first
-
-Fast loading
-
-Character Style
-
-Use only high-quality 3D cartoon characters, inspired by Pixar and DreamWorks (without copying any specific copyrighted characters).
-
-Characters should have:
-
-expressive faces
-
-oversized eyes
-
-soft rounded proportions
-
-vibrant clothing
-
-playful poses
-
-realistic lighting
-
-detailed textures
-
-warm, friendly emotions
-
-Include diverse children of different ethnicities and abilities to make the experience inclusive.
-
-Technical Requirements
-
-Responsive across desktop, tablet, and mobile
-
-Built with modern React + Tailwind CSS
-
-Smooth GSAP or Framer Motion animations
-
-Lottie animations where appropriate
-
-Optimized images and lazy loading
-
-SEO-friendly structure
-
-Accessible (WCAG compliant)
-
-Dark mode support (optional)
-
-Clean, reusable component architecture
-
-Design Goal: Create a landing page that feels like a cross between a premium AI startup, a Disney/Pixar-inspired children's experience, and a modern SaaS product. It should instantly capture a child's imagination while conveying trust and quality to parents through polished visuals, delightful micro-interactions, and immersive 3D storytelling elements. look at the design preference  like i gave u
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/a0a5dccf-b063-479e-8ef4-448dc950aa05).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires Node.js and [Bun](https://bun.sh) (or npm).
 
 ```sh
-git clone <this-repository-url>
+git clone <repository-url>
 cd <repository-name>
-npm i
-npm run dev
+bun install        # or: npm install
+bun run dev        # or: npm run dev
 ```
+
+Set up environment variables (Supabase project URL + publishable keys, and `LOVABLE_API_KEY` for AI generation).
+
+## Project Structure
+
+```
+src/
+├── components/     # UI primitives, layout, effects
+├── lib/            # auth, store, stories, story-generation logic
+├── routes/         # file-based routes (landing, auth, app pages)
+└── integrations/   # Supabase client & auth wiring
+supabase/
+└── migrations/     # schema, RLS policies, seed data
+```
+
+## Built with Lovable
+
+This project is developed with [Lovable](https://lovable.dev) — build the UI in the editor and push changes straight back to this repository.
