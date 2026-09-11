@@ -96,7 +96,25 @@
   --shadow-glow: 0 20px 50px -12px oklch(0.72 0.22 0 / 0.4);
   --shadow-card: 0 8px 24px -8px oklch(0.5 0.1 290 / 0.18);
   --shadow-float: 0 30px 60px -20px oklch(0.4 0.15 290 / 0.25);
+
+  /* ---- Matte 3D toy material (soft studio light, no gloss) ---- */
+  /* Top rim = soft key light, bottom rim = molded bevel, plus ambient + contact shadow */
+  --toy-rim-light: inset 0 2px 0 oklch(1 0 0 / 0.72), inset 0 1px 3px oklch(1 0 0 / 0.5);
+  --toy-rim-dark: inset 0 -3px 0 oklch(0.55 0.1 295 / 0.1);
+  --toy-ambient: 0 10px 22px -12px oklch(0.45 0.1 292 / 0.2);
+  --toy-contact: 0 2px 4px -1px oklch(0.4 0.1 292 / 0.14);
+  --toy-surface: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact), var(--toy-ambient);
+  --toy-surface-lift:
+    inset 0 2px 0 oklch(1 0 0 / 0.8), inset 0 1px 4px oklch(1 0 0 / 0.55),
+    inset 0 -3px 0 oklch(0.55 0.1 295 / 0.09),
+    0 4px 8px -2px oklch(0.4 0.1 292 / 0.14),
+    0 20px 38px -18px oklch(0.42 0.1 292 / 0.26);
+  --toy-press:
+    inset 0 3px 8px oklch(0.4 0.12 292 / 0.18), inset 0 -1px 0 oklch(1 0 0 / 0.35),
+    0 1px 2px oklch(0.4 0.1 292 / 0.12);
+  --toy-ease: cubic-bezier(0.34, 1.4, 0.5, 1);
 }
+
 
 .dark {
   /* Deep midnight galaxy palette */
@@ -262,7 +280,7 @@
 @utility animate-wiggle { animation: wiggle 3s ease-in-out infinite; }
 @utility animate-pop-in { animation: pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 
-/* ============ Magic Cursor ============ */
+/* ============ Magic Cursor — small matte 3D toy pointer ============ */
 @media (pointer: fine) {
   html.magic-cursor-active,
   html.magic-cursor-active body,
@@ -272,102 +290,224 @@
 }
 /* Decorative cursor layers must never intercept mouse events */
 .magic-cursor,
-.magic-cursor-character,
-.magic-cursor-character * {
+.magic-cursor *,
+.toy-cursor,
+.toy-cursor * {
   pointer-events: none !important;
 }
 
-.magic-cursor-character {
-  filter: drop-shadow(0 10px 18px oklch(0.42 0.18 300 / 0.36));
-  transition: transform 80ms cubic-bezier(.2,.95,.25,1.18), filter 220ms ease;
+.toy-cursor {
+  transition: filter 200ms ease;
+  filter: drop-shadow(0 4px 5px oklch(0.42 0.1 292 / 0.3));
 }
-.magic-cursor-character .dragon-body {
-  animation: dragon-float 1.9s ease-in-out infinite;
+/* Soft molded pointer body */
+.toy-cursor .tc-body {
+  transition: transform 160ms var(--toy-ease);
+  transform-box: fill-box;
+  transform-origin: 15% 15%;
+}
+/* Tiny contact shadow beneath the toy */
+.toy-cursor .tc-contact {
+  fill: oklch(0.35 0.09 292 / 0.22);
+  transition: opacity 160ms ease, transform 160ms ease;
   transform-box: fill-box;
   transform-origin: center;
 }
-.magic-cursor-character .dragon-wing {
-  animation: dragon-flap 0.72s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: 75% 50%;
+/* Hover on an interactive element: the toy lifts and opens up */
+.toy-cursor[data-state="hover"] { filter: drop-shadow(0 7px 9px oklch(0.42 0.1 292 / 0.32)); }
+.toy-cursor[data-state="hover"] .tc-body { transform: translateY(-1.5px) scale(1.1); }
+.toy-cursor[data-state="hover"] .tc-contact { opacity: 0.55; transform: scale(0.85); }
+/* Card hover: gentle lift, no scale-up */
+.toy-cursor[data-state="card"] .tc-body { transform: translateY(-2.5px) scale(1.04); }
+.toy-cursor[data-state="card"] .tc-contact { opacity: 0.4; transform: scale(0.8); }
+/* Press: compresses like a physical button */
+.toy-cursor[data-down="1"] { filter: drop-shadow(0 2px 3px oklch(0.42 0.1 292 / 0.34)); }
+.toy-cursor[data-down="1"] .tc-body {
+  transform: translateY(1.5px) scale(0.9);
+  transition: transform 70ms ease-out;
 }
-.magic-cursor-character .dragon-wing-right { transform-origin: 20% 55%; animation-delay: -0.12s; }
-.magic-cursor-character .dragon-tail {
-  animation: dragon-tail 1.1s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: 40% 55%;
-}
-.magic-cursor-character .dragon-wand {
-  animation: dragon-wand 1.25s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: 25% 85%;
-}
-.magic-cursor-character .dragon-aura circle {
-  fill: color-mix(in oklab, var(--magic-sky) 36%, transparent);
-  animation: dragon-aura 1.8s ease-in-out infinite;
-}
-.magic-cursor-character .dragon-shadow {
-  fill: oklch(0.2 0.1 285 / 0.22);
-  animation: dragon-shadow 1.9s ease-in-out infinite;
-}
-.magic-cursor-character .dragon-sparkles {
-  fill: var(--magic-yellow);
-  animation: sparkle-pulse 1.3s ease-in-out infinite;
-}
-.magic-cursor-character[data-hover="1"] {
-  filter: drop-shadow(0 0 12px oklch(0.9 0.17 95 / 0.85)) drop-shadow(0 12px 22px oklch(0.58 0.22 305 / 0.45));
-}
-.magic-cursor-character[data-hover="1"] .dragon-wing { animation-duration: 0.38s; }
-.magic-cursor-character[data-hover="1"] .dragon-wand { animation-duration: 0.65s; }
-.magic-cursor-character[data-down="1"] .dragon-body { animation: dragon-squish 0.22s ease-out; }
-@keyframes dragon-float {
-  0%, 100% { translate: 0 0; rotate: -1deg; }
-  50% { translate: 0 -5px; rotate: 2deg; }
-}
-@keyframes dragon-flap {
-  0%, 100% { scale: 1 1; rotate: -7deg; }
-  50% { scale: 0.82 1.14; rotate: 10deg; }
-}
-@keyframes dragon-tail {
-  0%, 100% { rotate: -6deg; }
-  50% { rotate: 8deg; }
-}
-@keyframes dragon-wand {
-  0%, 100% { rotate: -6deg; translate: 0 0; }
-  50% { rotate: 9deg; translate: 1px -2px; }
-}
-@keyframes dragon-aura {
-  0%, 100% { opacity: 0.45; scale: 0.92; }
-  50% { opacity: 0.82; scale: 1.16; }
-}
-@keyframes dragon-shadow {
-  0%, 100% { opacity: 0.18; scale: 0.9 0.8; }
-  50% { opacity: 0.28; scale: 1.08 1; }
-}
-@keyframes sparkle-pulse {
-  0%, 100% { opacity: 0.45; scale: 0.85; }
-  50% { opacity: 1; scale: 1.18; }
-}
-@keyframes dragon-squish {
-  0% { scale: 1; }
-  50% { scale: 1.16 0.86; }
-  100% { scale: 1; }
+.toy-cursor[data-down="1"] .tc-contact { opacity: 0.75; transform: scale(1.05); }
+
+/* ============================================================
+   MATTE 3D TOY LAYER
+   A soft, molded-plastic material applied on top of the
+   existing design system. Layout, colors and structure are
+   untouched — only depth, bevel and contact shadows are added.
+   ============================================================ */
+
+.dark {
+  --toy-rim-light: inset 0 2px 0 oklch(1 0 0 / 0.14), inset 0 1px 3px oklch(1 0 0 / 0.08);
+  --toy-rim-dark: inset 0 -3px 0 oklch(0 0 0 / 0.3);
+  --toy-ambient: 0 12px 26px -12px oklch(0 0 0 / 0.6);
+  --toy-contact: 0 2px 5px -1px oklch(0 0 0 / 0.5);
+  --toy-surface-lift:
+    inset 0 2px 0 oklch(1 0 0 / 0.18), inset 0 1px 4px oklch(1 0 0 / 0.1),
+    inset 0 -3px 0 oklch(0 0 0 / 0.32),
+    0 4px 10px -2px oklch(0 0 0 / 0.5),
+    0 22px 42px -18px oklch(0 0 0 / 0.65);
+  --toy-press:
+    inset 0 3px 9px oklch(0 0 0 / 0.5), inset 0 -1px 0 oklch(1 0 0 / 0.1),
+    0 1px 2px oklch(0 0 0 / 0.4);
 }
 
-/* Interactive elements bounce and glow under the magic friend */
+/* ---- Reusable material utilities ---- */
+
+@utility toy-surface {
+  box-shadow: var(--toy-surface);
+  transition: box-shadow 260ms ease, transform 260ms var(--toy-ease);
+}
+
+@utility toy-lift {
+  transition: box-shadow 260ms ease, transform 260ms var(--toy-ease);
+}
+@utility toy-icon {
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  box-shadow: var(--toy-surface);
+  filter: drop-shadow(0 2px 2px oklch(0.4 0.1 292 / 0.18));
+}
+@utility toy-badge {
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.6), inset 0 -2px 0 oklch(0.5 0.1 295 / 0.12),
+    0 2px 4px -1px oklch(0.4 0.1 292 / 0.18);
+}
+
+/* ---- Existing cards inherit the matte bevel automatically ---- */
+/* Any surface already using the project shadow tokens becomes molded. */
+.shadow-card {
+  box-shadow: var(--toy-surface) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+.shadow-soft {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact),
+    0 12px 26px -14px oklch(0.5 0.16 300 / 0.28) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+.shadow-float {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), 0 5px 10px -3px oklch(0.4 0.1 292 / 0.16),
+    0 34px 60px -24px oklch(0.42 0.12 292 / 0.34) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+/* Soft toy lift on card hover — 1 degree max, never a spin */
 @media (hover: hover) and (pointer: fine) {
-  a:hover, button:not(:disabled):hover, [role="button"]:hover,
-  label:hover, summary:hover, input:hover, select:hover, textarea:hover,
-  [data-cursor="hover"]:hover {
-    transform: translateY(-2px) scale(1.025);
-    box-shadow: 0 12px 28px -18px color-mix(in oklab, var(--primary) 72%, transparent), 0 0 0 1px color-mix(in oklab, var(--magic-yellow) 18%, transparent) inset;
-    transition: transform 180ms cubic-bezier(.2,.9,.3,1.2), box-shadow 220ms ease, filter 220ms ease;
-  }
-  a:active, button:not(:disabled):active, [role="button"]:active {
-    transform: translateY(0) scale(0.97);
-    transition: transform 90ms ease-out;
+  .shadow-card:hover,
+  .shadow-float:hover {
+    box-shadow: var(--toy-surface-lift) !important;
+    transform: translateY(-3px);
   }
 }
+
+/* ---- Gradient panels get a molded top light + soft inner bevel ---- */
+.bg-gradient-magic,
+.bg-gradient-primary,
+.bg-gradient-sunset,
+.bg-gradient-mint {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact), var(--toy-ambient);
+}
+
+/* ---- Extruded toy buttons ---- */
+button:not(:disabled),
+a[class*="rounded"],
+[role="button"] {
+  transition:
+    transform 200ms var(--toy-ease),
+    box-shadow 240ms ease;
+}
+button:not(:disabled),
+[role="button"] {
+  transform-style: preserve-3d;
+}
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):hover,
+  [role="button"]:hover,
+  a[class*="rounded-full"]:hover,
+  a[class*="rounded-2xl"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--toy-surface-lift);
+  }
+}
+button:not(:disabled):active,
+[role="button"]:active,
+a[class*="rounded-full"]:active,
+a[class*="rounded-2xl"]:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--toy-press);
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+
+/* Inputs stay flat and calm — only a gentle inset so they read as recessed */
+input:not([type="range"]),
+select,
+textarea {
+  box-shadow: inset 0 2px 4px oklch(0.5 0.08 295 / 0.08);
+  transition: box-shadow 200ms ease;
+}
+input:not([type="range"]):focus,
+select:focus,
+textarea:focus {
+  box-shadow: inset 0 2px 5px oklch(0.5 0.08 295 / 0.1);
+}
+
+/* ---- Soft 3D toy emoji / illustration treatment ---- */
+/* Emoji inside round plates read as little molded figurines */
+.rounded-full,
+.rounded-3xl,
+.rounded-2xl {
+  --toy-radius-marker: 1;
+}
+[class*="place-items-center"][class*="rounded-full"] {
+  text-shadow: 0 2px 3px oklch(0.4 0.1 292 / 0.22);
+}
+
+/* ---- Gentle idle float for decorative objects (respects reduced motion) ---- */
+@keyframes toy-idle {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50% { transform: translateY(-6px) rotate(0.6deg); }
+}
+@utility animate-toy-idle { animation: toy-idle 5.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-toy-idle,
+  .animate-float-y,
+  .animate-float-slow,
+  .animate-drift,
+  .animate-toy-idle { animation: none !important; }
+  .shadow-card:hover,
+  .shadow-float:hover,
+  button:not(:disabled):hover,
+  [role="button"]:hover { transform: none; }
+}
+
+/* ---- Soft background depth: a few blurred toy blocks, never busy ---- */
+.toy-scene { position: relative; isolation: isolate; }
+.toy-scene::before,
+.toy-scene::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 42%;
+  filter: blur(28px);
+  opacity: 0.4;
+}
+.toy-scene::before {
+  width: 16rem; height: 16rem;
+  top: -4rem; left: -5rem;
+  background: radial-gradient(circle at 34% 30%, oklch(0.92 0.08 305), oklch(0.84 0.1 300 / 0.35) 62%, transparent 72%);
+  animation: toy-idle 9s ease-in-out infinite;
+}
+.toy-scene::after {
+  width: 13rem; height: 13rem;
+  right: -4rem; bottom: -3.5rem;
+  background: radial-gradient(circle at 40% 30%, oklch(0.94 0.07 60), oklch(0.88 0.09 40 / 0.32) 60%, transparent 72%);
+  animation: toy-idle 11s ease-in-out infinite reverse;
+}
+@media (max-width: 640px) {
+  .toy-scene::before { width: 9rem; height: 9rem; top: -2.5rem; left: -3rem; }
+  .toy-scene::after { width: 8rem; height: 8rem; right: -2.5rem; bottom: -2rem; }
+}
+/* Never let decoration create horizontal scroll */
+html, body { overflow-x: hidden; }
 
 /* Magical hover glow utility */
 @utility magic-hover {
@@ -400,7 +540,6 @@
 .dark .text-black { color: var(--foreground) !important; }
 .dark .text-white { color: oklch(0.98 0.02 305); }
 
-/* Muted panels become moonlit navy */
 .dark .bg-muted,
 .dark .bg-muted\/40,
 .dark .bg-muted\/50,
@@ -408,12 +547,6 @@
   background-color: color-mix(in oklab, var(--muted) 80%, transparent) !important;
 }
 
-/* Lift every card with a soft nebula glow in dark mode */
-.dark .shadow-card { box-shadow: var(--shadow-card); }
-.dark .shadow-soft { box-shadow: var(--shadow-soft); }
-.dark .shadow-float { box-shadow: var(--shadow-float); }
-
-/* Inputs, selects, textareas — glassy midnight */
 .dark input,
 .dark select,
 .dark textarea {
@@ -425,7 +558,6 @@
 .dark textarea::placeholder { color: color-mix(in oklab, var(--foreground) 55%, transparent); }
 .dark option { background-color: oklch(0.16 0.07 285); color: var(--foreground); }
 
-/* Sonner toast, dialogs, popovers, dropdowns */
 .dark [data-sonner-toast],
 .dark [role="dialog"],
 .dark [role="menu"],
@@ -438,17 +570,8 @@
   backdrop-filter: blur(18px) saturate(150%);
 }
 
-/* Colored accent chips stay vibrant */
 .dark .text-magic-purple { color: var(--magic-purple); }
 .dark .text-magic-pink { color: var(--magic-pink); }
-
-/* Sparkle constellation overlay on cards */
-.dark .bg-white,
-.dark .bg-white\/90,
-.dark .bg-white\/80,
-.dark .bg-white\/70 {
-  position: relative;
-}
 
 /* Floating moon glow for hero panels */
 .dark .bg-gradient-hero::before {
@@ -462,28 +585,4 @@
     radial-gradient(1.2px 1.2px at 75% 70%, oklch(0.95 0.1 300 / 0.8), transparent 60%),
     radial-gradient(1.4px 1.4px at 45% 50%, oklch(0.95 0.1 200 / 0.7), transparent 60%);
   animation: twinkle 4s ease-in-out infinite;
-}
-
-/* ============================================================
-   Magic Cursor — Light-mode variant
-   Matte pink 3D cartoon (no glossy shine)
-   ============================================================ */
-:root:not(.dark) .magic-cursor-character {
-  /* Recolor the shared magic tokens locally so the SVG gradients
-     become a soft pink/rose cartoon palette */
-  --magic-mint: oklch(0.92 0.06 355);      /* soft blush */
-  --magic-sky: oklch(0.82 0.15 355);       /* rose */
-  --magic-purple: oklch(0.66 0.22 355);    /* deep pink */
-  --magic-peach: oklch(0.9 0.09 20);       /* peach highlight */
-  --magic-pink: oklch(0.72 0.22 0);        /* strawberry */
-  --magic-yellow: oklch(0.9 0.14 40);      /* warm cream accent */
-  --magic-orange: oklch(0.78 0.19 25);
-  /* Matte, flat drop shadow — no neon glow */
-  filter: drop-shadow(0 6px 10px oklch(0.55 0.18 355 / 0.28));
-}
-/* Kill the shiny belly highlight and neon aura in light mode */
-:root:not(.dark) .magic-cursor-character .dragon-body ellipse { opacity: 0 !important; }
-:root:not(.dark) .magic-cursor-character .dragon-aura { display: none; }
-:root:not(.dark) .magic-cursor-character[data-hover="1"] {
-  filter: drop-shadow(0 8px 14px oklch(0.6 0.22 355 / 0.38));
 }
