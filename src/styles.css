@@ -505,3 +505,184 @@
 :root:not(.dark) .magic-cursor-character[data-hover="1"] {
   filter: drop-shadow(0 8px 14px oklch(0.6 0.22 355 / 0.38));
 }
+
+/* ============================================================
+   MATTE 3D TOY LAYER
+   A soft, molded-plastic material applied on top of the
+   existing design system. Layout, colors and structure are
+   untouched — only depth, bevel and contact shadows are added.
+   ============================================================ */
+
+.dark {
+  --toy-rim-light: inset 0 2px 0 oklch(1 0 0 / 0.14), inset 0 1px 3px oklch(1 0 0 / 0.08);
+  --toy-rim-dark: inset 0 -3px 0 oklch(0 0 0 / 0.3);
+  --toy-ambient: 0 12px 26px -12px oklch(0 0 0 / 0.6);
+  --toy-contact: 0 2px 5px -1px oklch(0 0 0 / 0.5);
+  --toy-surface-lift:
+    inset 0 2px 0 oklch(1 0 0 / 0.18), inset 0 1px 4px oklch(1 0 0 / 0.1),
+    inset 0 -3px 0 oklch(0 0 0 / 0.32),
+    0 4px 10px -2px oklch(0 0 0 / 0.5),
+    0 22px 42px -18px oklch(0 0 0 / 0.65);
+  --toy-press:
+    inset 0 3px 9px oklch(0 0 0 / 0.5), inset 0 -1px 0 oklch(1 0 0 / 0.1),
+    0 1px 2px oklch(0 0 0 / 0.4);
+}
+
+/* ---- Reusable material utilities ---- */
+
+@utility toy-surface {
+  box-shadow: var(--toy-surface);
+  transition: box-shadow 260ms ease, transform 260ms var(--toy-ease);
+}
+
+@utility toy-lift {
+  transition: box-shadow 260ms ease, transform 260ms var(--toy-ease);
+}
+@utility toy-icon {
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  box-shadow: var(--toy-surface);
+  filter: drop-shadow(0 2px 2px oklch(0.4 0.1 292 / 0.18));
+}
+@utility toy-badge {
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.6), inset 0 -2px 0 oklch(0.5 0.1 295 / 0.12),
+    0 2px 4px -1px oklch(0.4 0.1 292 / 0.18);
+}
+
+/* ---- Existing cards inherit the matte bevel automatically ---- */
+/* Any surface already using the project shadow tokens becomes molded. */
+.shadow-card {
+  box-shadow: var(--toy-surface) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+.shadow-soft {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact),
+    0 12px 26px -14px oklch(0.5 0.16 300 / 0.28) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+.shadow-float {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), 0 5px 10px -3px oklch(0.4 0.1 292 / 0.16),
+    0 34px 60px -24px oklch(0.42 0.12 292 / 0.34) !important;
+  transition: box-shadow 280ms ease, transform 280ms var(--toy-ease);
+}
+/* Soft toy lift on card hover — 1 degree max, never a spin */
+@media (hover: hover) and (pointer: fine) {
+  .shadow-card:hover,
+  .shadow-float:hover {
+    box-shadow: var(--toy-surface-lift) !important;
+    transform: translateY(-3px);
+  }
+}
+
+/* ---- Gradient panels get a molded top light + soft inner bevel ---- */
+.bg-gradient-magic,
+.bg-gradient-primary,
+.bg-gradient-sunset,
+.bg-gradient-mint {
+  box-shadow: var(--toy-rim-light), var(--toy-rim-dark), var(--toy-contact), var(--toy-ambient);
+}
+
+/* ---- Extruded toy buttons ---- */
+button:not(:disabled),
+a[class*="rounded"],
+[role="button"] {
+  transition:
+    transform 200ms var(--toy-ease),
+    box-shadow 240ms ease;
+}
+button:not(:disabled),
+[role="button"] {
+  transform-style: preserve-3d;
+}
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):hover,
+  [role="button"]:hover,
+  a[class*="rounded-full"]:hover,
+  a[class*="rounded-2xl"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--toy-surface-lift);
+  }
+}
+button:not(:disabled):active,
+[role="button"]:active,
+a[class*="rounded-full"]:active,
+a[class*="rounded-2xl"]:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--toy-press);
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+
+/* Inputs stay flat and calm — only a gentle inset so they read as recessed */
+input:not([type="range"]),
+select,
+textarea {
+  box-shadow: inset 0 2px 4px oklch(0.5 0.08 295 / 0.08);
+  transition: box-shadow 200ms ease;
+}
+input:not([type="range"]):focus,
+select:focus,
+textarea:focus {
+  box-shadow: inset 0 2px 5px oklch(0.5 0.08 295 / 0.1);
+}
+
+/* ---- Soft 3D toy emoji / illustration treatment ---- */
+/* Emoji inside round plates read as little molded figurines */
+.rounded-full,
+.rounded-3xl,
+.rounded-2xl {
+  --toy-radius-marker: 1;
+}
+[class*="place-items-center"][class*="rounded-full"] {
+  text-shadow: 0 2px 3px oklch(0.4 0.1 292 / 0.22);
+}
+
+/* ---- Gentle idle float for decorative objects (respects reduced motion) ---- */
+@keyframes toy-idle {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50% { transform: translateY(-6px) rotate(0.6deg); }
+}
+@utility animate-toy-idle { animation: toy-idle 5.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-toy-idle,
+  .animate-float-y,
+  .animate-float-slow,
+  .animate-drift,
+  .animate-toy-idle { animation: none !important; }
+  .shadow-card:hover,
+  .shadow-float:hover,
+  button:not(:disabled):hover,
+  [role="button"]:hover { transform: none; }
+}
+
+/* ---- Soft background depth: a few blurred toy blocks, never busy ---- */
+.toy-scene { position: relative; isolation: isolate; }
+.toy-scene::before,
+.toy-scene::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 42%;
+  filter: blur(28px);
+  opacity: 0.4;
+}
+.toy-scene::before {
+  width: 16rem; height: 16rem;
+  top: -4rem; left: -5rem;
+  background: radial-gradient(circle at 34% 30%, oklch(0.92 0.08 305), oklch(0.84 0.1 300 / 0.35) 62%, transparent 72%);
+  animation: toy-idle 9s ease-in-out infinite;
+}
+.toy-scene::after {
+  width: 13rem; height: 13rem;
+  right: -4rem; bottom: -3.5rem;
+  background: radial-gradient(circle at 40% 30%, oklch(0.94 0.07 60), oklch(0.88 0.09 40 / 0.32) 60%, transparent 72%);
+  animation: toy-idle 11s ease-in-out infinite reverse;
+}
+@media (max-width: 640px) {
+  .toy-scene::before { width: 9rem; height: 9rem; top: -2.5rem; left: -3rem; }
+  .toy-scene::after { width: 8rem; height: 8rem; right: -2.5rem; bottom: -2rem; }
+}
+/* Never let decoration create horizontal scroll */
+html, body { overflow-x: hidden; }
